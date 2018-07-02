@@ -1,6 +1,6 @@
 package botenanna.behaviortree.guards;
 
-import botenanna.Ball;
+import botenanna.game.Ball;
 import botenanna.behaviortree.ArgumentTranslator;
 import botenanna.behaviortree.Leaf;
 import botenanna.behaviortree.MissingNodeException;

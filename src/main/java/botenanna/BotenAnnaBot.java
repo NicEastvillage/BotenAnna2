@@ -55,17 +55,19 @@ public class BotenAnnaBot implements Bot {
         return lastInputReceived;
     }
 
-    public void setLastInputReceived(Situation lastInputReceived) {
-        this.lastInputReceived = lastInputReceived;
-    }
-
     @Override
     public ControllerState processInput(GameTickPacket request) {
         if (request.playersLength() <= playerIndex || request.ball() == null) {
             return new ControlsOutput();
         }
         Situation situation = new Situation(request, playerIndex);
-        return process(situation).toControllerState();
+        try {
+            ActionSet action = process(situation);
+            return action.toControllerState();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ControlsOutput();
+        }
     }
 
     @Override

@@ -2,7 +2,7 @@ package botenanna.physics;
 
 import botenanna.math.Vector3;
 
-import static botenanna.Ball.*;
+import static botenanna.game.Ball.*;
 
 public class BallPhysics {
 

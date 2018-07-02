@@ -26,7 +26,7 @@ public class ArgumentTranslator {
             case "ball_land_time": return (Situation a) -> a.getBallLandingTime();           // time (double)
             case "ball_land_pos": return (Situation a) -> a.getBallLandingPosition();        // Vector3
 
-            case "best_boost": return (Situation a) -> a.getBestBoostPad();                  // Vector 3
+            case "best_boost": return (Situation a) -> a.getBestBoostPad().getPosition();    // Vector 3
             case "ang_ball": return (Situation a) -> a.getMyCar().getAngleToBall();          // angle (double)
             case "enemy_ang_ball": return (Situation a) -> a.getEnemyCar().getAngleToBall(); // angle (double)
 
