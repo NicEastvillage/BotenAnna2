@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import rlbot.SamplePythonInterface;
 import rlbot.manager.BotManager;
 import rlbot.pyinterop.PythonInterface;
 import rlbot.pyinterop.PythonServer;
@@ -26,10 +25,6 @@ public class BotenAnna extends Application {
     private PythonServer pythonServer;
     private Map<BotenAnnaBot, BotInfoDisplay> botInfoDisplays;
     private BallInfoDisplay ballInfoDisplay;
-
-    public static void main(String[] args) {
-        launch(args);
-    }
 
     @Override
     public void start(Stage stage) throws Exception {
