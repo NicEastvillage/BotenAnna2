@@ -1,5 +1,6 @@
-package botenanna;
+package botenanna.oldserver;
 
+import botenanna.BotenAnnaBot;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 

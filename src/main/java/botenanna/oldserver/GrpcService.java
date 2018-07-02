@@ -1,5 +1,7 @@
-package botenanna;
+package botenanna.oldserver;
 
+import botenanna.BotenAnna;
+import botenanna.BotenAnnaBot;
 import botenanna.behaviortree.BehaviorTree;
 import botenanna.game.ActionSet;
 import botenanna.game.Situation;

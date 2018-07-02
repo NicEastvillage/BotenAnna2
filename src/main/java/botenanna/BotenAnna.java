@@ -3,18 +3,19 @@ package botenanna;
 import botenanna.behaviortree.builder.BehaviourTreeBuilder;
 import botenanna.display.BallInfoDisplay;
 import botenanna.display.BotInfoDisplay;
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleLongProperty;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import rlbot.SamplePythonInterface;
+import rlbot.manager.BotManager;
+import rlbot.pyinterop.PythonInterface;
+import rlbot.pyinterop.PythonServer;
+import rlbot.util.PortReader;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
 
 public class BotenAnna extends Application {
 
@@ -22,7 +23,7 @@ public class BotenAnna extends Application {
 
     private Pane root;
     private Pane botInfoDisplayRoot;
-    private GrpcServer grpc;
+    private PythonServer pythonServer;
     private Map<BotenAnnaBot, BotInfoDisplay> botInfoDisplays;
     private BallInfoDisplay ballInfoDisplay;
 
@@ -35,7 +36,7 @@ public class BotenAnna extends Application {
 
         // Technical stuff
         createDefaultBehaviourTreeBuilder(stage);
-        startGrpcServerAndInputPoll();
+        startPythonServer();
 
         root = new VBox();
 
@@ -48,35 +49,16 @@ public class BotenAnna extends Application {
 
         Scene scene = new Scene(root, 280, 320);
         stage.setScene(scene);
-        stage.setTitle("Boten Anna - Data Display Window");
+        stage.setTitle("Boten Anna - Data Window");
         stage.setAlwaysOnTop(true);
         stage.show();
     }
 
-    private void startGrpcServerAndInputPoll() throws Exception {
-        // The javafx application thread does not allow other threads to call its methods
-        // so a multi-thread safe queue is used to send data between the window and the server
-        final ArrayBlockingQueue<BotenAnnaBot> botUpdateQueue = new ArrayBlockingQueue<>(3);
-        grpc = new GrpcServer(botUpdateQueue);
-        grpc.start();
-        System.out.println(String.format("Grpc server started on port %s. Listening for Rocket League data!", grpc.getPort()));
-
-        // Setup timer that acts each frame and checks bot updates placed in botUpdateQueue
-        final LongProperty lastUpdate = new SimpleLongProperty();
-        AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                if (now - lastUpdate.get() > 0) {
-                    final BotenAnnaBot bot = botUpdateQueue.poll();
-                    if (bot != null) {
-                        updateBotInfoDisplay(bot);
-                        ballInfoDisplay.update(bot.getLastInputReceived());
-                    }
-                    lastUpdate.set(now);
-                }
-            }
-        };
-        timer.start();
+    private void startPythonServer() throws Exception {
+        Integer port = PortReader.readPortFromFile("port.cfg");
+        PythonInterface pythonInterface = new BotenAnnaPythonInterface(new BotManager());
+        pythonServer = new PythonServer(pythonInterface, port);
+        pythonServer.start();
     }
 
     private void createDefaultBehaviourTreeBuilder(Stage stage) {
