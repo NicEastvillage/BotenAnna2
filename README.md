@@ -1,5 +1,6 @@
-# RLBotJavaExample
-An example bot implemented in Java
+Boten Anna
+A Rocket League bot writen in Java. A continuation of my 2. semester uni project.
+See [RLBot](https://github.com/RLBot/RLBot) framework for more information.
 
 ## Usage Instructions:
 
@@ -15,6 +16,3 @@ open and it's OK if it says something like "75%".
 
 - Bot behavior is controlled by `src/main/java/SampleBot.java`
 - Bot appearance is controlled by `src/main/python/javaExampleAppearance.cfg`
-
-See the [wiki](https://github.com/RLBot/RLBotJavaExample/wiki)
-for tips to improve your programming experience.
