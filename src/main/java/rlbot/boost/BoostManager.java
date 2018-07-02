@@ -1,10 +1,10 @@
 package rlbot.boost;
 
+import botenanna.math.Vector3;
 import rlbot.cppinterop.RLBotDll;
 import rlbot.flat.BoostPadState;
 import rlbot.flat.FieldInfo;
 import rlbot.flat.GameTickPacket;
-import rlbot.vector.Vector3;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class BoostManager {
 
             for (int i = 0; i < fieldInfo.boostPadsLength(); i++) {
                 rlbot.flat.BoostPad flatPad = fieldInfo.boostPads(i);
-                BoostPad ourPad = new BoostPad(Vector3.fromFlatbuffer(flatPad.location()), flatPad.isFullBoost());
+                BoostPad ourPad = new BoostPad(Vector3.convert(flatPad.location()), flatPad.isFullBoost());
                 orderedBoosts.add(ourPad);
                 if (ourPad.isFullBoost()) {
                     fullBoosts.add(ourPad);
@@ -61,5 +61,4 @@ public class BoostManager {
             existingPad.setActive(boost.isActive());
         }
     }
-
 }

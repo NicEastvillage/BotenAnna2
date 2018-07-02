@@ -1,6 +1,6 @@
 package rlbot.boost;
 
-import rlbot.vector.Vector3;
+import botenanna.math.Vector3;
 
 public class BoostPad {
 
