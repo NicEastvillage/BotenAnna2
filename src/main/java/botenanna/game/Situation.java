@@ -17,6 +17,8 @@ import java.io.IOException;
  * GameTickPacket and our own calculations. */
 public class Situation {
 
+    public static FieldInfo fieldInfo;
+
     public final int myPlayerIndex;
     public final int enemyPlayerIndex;
 
@@ -32,11 +34,11 @@ public class Situation {
     private final boolean isOvertime;
     private final boolean isRoundActive;
     private final int gamePlayerCount;
-    private final Boostpad[] boostpads;
+    private final BoostPad[] boostPads;
 
     private GameTickPacket packet;
 
-    private Boostpad bestBoostpad = null;
+    private BoostPad bestBoostPad = null;
     private double myPossessionUtility = 0;
     private double enemyPossessionUtility = 0;
     private boolean enemyHasPossession;
@@ -44,7 +46,7 @@ public class Situation {
     /** Create a Situation from GameTickPacket. */
     public Situation(GameTickPacket packet, int playerIndex) {
         this.packet = packet;
-        this.boostpads = constructBoostpadArray(packet);
+        this.boostPads = constructBoostpadArray(packet);
 
         // Cars
         myPlayerIndex = playerIndex;
@@ -74,13 +76,13 @@ public class Situation {
     }
 
     /** Create Situation by providing the pieces. */
-    public Situation(Car car, Car enemyCar, Rigidbody ball, Boostpad[] boostpads) {
+    public Situation(Car car, Car enemyCar, Rigidbody ball, BoostPad[] boostPads) {
         this.myPlayerIndex = car.getPlayerIndex();
         this.enemyPlayerIndex = enemyCar.getPlayerIndex();
         this.myCar = car;
         this.enemyCar = enemyCar;
         this.ball = ball;
-        this.boostpads = boostpads;
+        this.boostPads = boostPads;
 
         // Ball landing
         double landingTime = SimplePhysics.predictArrivalAtHeight(ball, Ball.RADIUS, true);
@@ -103,38 +105,45 @@ public class Situation {
     }
 
     /** Construct an array of boost pads from the packet's list of BoostpadInfo. */
-    private Boostpad[] constructBoostpadArray(GameTickPacket packet) {
-        int count = packet.boostPadStatesLength();
-        Boostpad[] boostpads = new Boostpad[count];
+    private BoostPad[] constructBoostpadArray(GameTickPacket packet) {
+        if (fieldInfo == null) {
+            try {
+                FieldInfo fieldInfo = RLBotDll.getFieldInfo();
+            } catch (IOException e) {
 
-        try {
-            FieldInfo fieldInfo = RLBotDll.getFieldInfo();
-
-            for (int i = 0; i < count; i++) {
-                BoostPadState state = packet.boostPadStates(i);
-                boostpads[i] = new Boostpad(fieldInfo.boostPads(i), state);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
-        return boostpads;
+        // If fieldInfo is still null, we can't construct boost pads
+        if (fieldInfo == null) {
+            return new BoostPad[0];
+        }
+
+        int count = packet.boostPadStatesLength();
+        BoostPad[] boostPads = new BoostPad[count];
+
+        for (int i = 0; i < count; i++) {
+            BoostPadState state = packet.boostPadStates(i);
+            boostPads[i] = new BoostPad(fieldInfo.boostPads(i), state);
+        }
+
+        return boostPads;
     }
 
     /** Used to get the best boostpad based on utility theory.
      * @return the best boostpad for myCar. */
-    public Boostpad getBestBoostPad() {
+    public BoostPad getBestBoostPad() {
         // Already calculated?
-        if (bestBoostpad != null) {
-            return bestBoostpad;
+        if (bestBoostPad != null) {
+            return bestBoostPad;
         }
 
         double bestBoostUtility = 0;
-        Boostpad bestpad = null;
+        BoostPad bestPad = null;
 
-        for (int i = 0; i < Boostpad.COUNT_TOTAL_PADS; i++) {
+        for (int i = 0; i < boostPads.length; i++) {
 
-            Boostpad pad = boostpads[i];
+            BoostPad pad = boostPads[i];
             Vector3 position = pad.getPosition();
 
             if (pad.isActive()){
@@ -145,12 +154,12 @@ public class Situation {
 
                 if (newBoostUtility > bestBoostUtility){
                     bestBoostUtility = newBoostUtility;
-                    bestpad = pad;
+                    bestPad = pad;
                 }
             }
         }
 
-        return bestBoostpad = bestpad;
+        return bestBoostPad = bestPad;
     }
 
     private void decidePossession() {
@@ -295,10 +304,10 @@ public class Situation {
         return gamePlayerCount;
     }
 
-    public Boostpad[] getBoostpads() {
-        Boostpad[] copies = new Boostpad[boostpads.length];
+    public BoostPad[] getBoostPads() {
+        BoostPad[] copies = new BoostPad[boostPads.length];
         for (int i = 0; i < copies.length; i++) {
-            copies[i] = new Boostpad(boostpads[i]);
+            copies[i] = new BoostPad(boostPads[i]);
         }
         return copies;
     }

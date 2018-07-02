@@ -1,6 +1,6 @@
 package botenanna.behaviortree.intentions;
 
-import botenanna.game.Boostpad;
+import botenanna.game.BoostPad;
 import botenanna.game.Situation;
 import botenanna.intentions.IntentionFunction;
 import botenanna.intentions.IntentionFunctionDriveOverPointWithAngle;
@@ -19,7 +19,7 @@ public class IntentionCollectBoost extends Intention {
     @Override
     protected IntentionFunction getIntentionFunction(Situation input) {
         final Vector3 bestPadPos = input.getBestBoostPad().getPosition(); // Not dynamic, since that will confuse the algorithms
-        return new IntentionFunctionDriveOverPointWithAngle(s -> bestPadPos, s -> s.getBall().getPosition(), 0.45, Boostpad.PAD_RADIUS, false);
+        return new IntentionFunctionDriveOverPointWithAngle(s -> bestPadPos, s -> s.getBall().getPosition(), 0.45, BoostPad.PAD_RADIUS, false);
     }
 
     @Override

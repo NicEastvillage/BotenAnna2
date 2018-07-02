@@ -1,7 +1,7 @@
 package botenanna.game.simulation;
 
 import botenanna.game.ActionSet;
-import botenanna.game.Boostpad;
+import botenanna.game.BoostPad;
 import botenanna.game.Car;
 import botenanna.game.Situation;
 import botenanna.math.Vector3;
@@ -23,33 +23,34 @@ public class Simulation {
         Rigidbody simulatedBall = simulateBall(situation.getBall(), stepsize);
         Car simulatedMyCar = simulateCarActions(situation.getMyCar(), action,  simulatedBall, stepsize);
         Car simulatedEnemyCar = steppedCar(situation.getEnemyCar(), stepsize);
-        Boostpad[] simulatedBoostpads = simulateBoostpads(situation.getBoostpads(), simulatedEnemyCar, simulatedMyCar, stepsize);
+        BoostPad[] simulatedBoostPads = simulateBoostPads(situation.getBoostPads(), simulatedEnemyCar, simulatedMyCar, stepsize);
 
         simulatedMyCar.setBallDependentVariables(simulatedBall.getPosition());
         simulatedEnemyCar.setBallDependentVariables(simulatedBall.getPosition());
 
-        return new Situation(simulatedMyCar, simulatedEnemyCar, simulatedBall , simulatedBoostpads);
+        return new Situation(simulatedMyCar, simulatedEnemyCar, simulatedBall , simulatedBoostPads);
     }
 
-    /** Simulates the boostpads, if any of the cars can pick up boost and they are stepped close to a pad deactivate them
-     * @return an array of boostpads after simulation. */
-    private static Boostpad[] simulateBoostpads(Boostpad[] boostpads, Car enemyCar, Car myCar, double stepsize) {
+    /** Simulates the boostPads, if any of the cars can pick up boost and they are stepped close to a pad deactivate them
+     * @return an array of boostPads after simulation. */
+    private static BoostPad[] simulateBoostPads(BoostPad[] boostPads, Car enemyCar, Car myCar, double stepsize) {
 
-        for (int i = 0; i < boostpads.length; i++) {
-            Boostpad pad = boostpads[i];
+        BoostPad[] simulatedPads = new BoostPad[boostPads.length];
 
-            simulatePickupBoostpad(pad, myCar);
-            simulatePickupBoostpad(pad, enemyCar);
-
+        for (int i = 0; i < boostPads.length; i++) {
+            BoostPad pad = new BoostPad(boostPads[i]);
+            simulatePickupOfBoostPad(pad, myCar);
+            simulatePickupOfBoostPad(pad, enemyCar);
             pad.reduceRespawnTimeLeft(stepsize);
+            simulatedPads[i] = pad;
         }
 
-        return boostpads;
+        return simulatedPads;
     }
 
     /** Checks if car is touching pad. If they do, give the car boost and refresh boostpads respawn timer. */
-    private static void simulatePickupBoostpad(Boostpad pad, Car car) {
-        if (pad.getPosition().getDistanceTo(car.getPosition()) < Boostpad.PAD_RADIUS) {
+    private static void simulatePickupOfBoostPad(BoostPad pad, Car car) {
+        if (pad.getPosition().getDistanceTo(car.getPosition()) < BoostPad.PAD_RADIUS) {
             pad.refreshRespawnTimer();
             car.addBoost(pad.getBoostAmount());
         }
