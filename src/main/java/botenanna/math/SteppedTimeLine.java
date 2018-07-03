@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /** <p>The SteppedTimeLine is able to associate items of type T with a specific point in time. The SteppedTimeLine is then able to return an
- * item based on time passed. The return item will be the item associated with the last passed time step.</p>
+ * item based on time passed. The return item will be the item associated with the last passed time stepBall.</p>
  *
  * <p>The SteppedTimeLine can be reset to start over.</p>*/
 public class SteppedTimeLine<T> implements TimeLine<T> {
@@ -23,7 +23,7 @@ public class SteppedTimeLine<T> implements TimeLine<T> {
 
     private LinkedList<TimeStep> timeSteps = new LinkedList<>();
 
-    /** Add a time step which consists of an item and an associated point in time.
+    /** Add a time stepBall which consists of an item and an associated point in time.
      * @param time point in time in seconds.
      * @param item the item which will be returned at this point in time. */
     @Override
@@ -37,7 +37,7 @@ public class SteppedTimeLine<T> implements TimeLine<T> {
             return;
         }
 
-        // Find position to insert time step.
+        // Find position to insert time stepBall.
         // We assume it is placed at the end, because you usually add TimeSteps in order
         for (int i = timeSteps.size() - 1; i >= 0; i--) {
             TimeStep other = timeSteps.get(i);
@@ -122,7 +122,7 @@ public class SteppedTimeLine<T> implements TimeLine<T> {
         return evaluateUpTrue(time).item;
     }
 
-    /** Retrieve a List of all step times in chronological order. */
+    /** Retrieve a List of all stepBall times in chronological order. */
     @Override
     public List<Double> getTimes() {
         ArrayList<Double> list = new ArrayList<>(timeSteps.size());
@@ -148,7 +148,7 @@ public class SteppedTimeLine<T> implements TimeLine<T> {
         return timeSteps.getFirst().time;
     }
 
-    /** Returns the item returned at the first step in the SteppedTimeLine. This is also the element return at infinity. */
+    /** Returns the item returned at the first stepBall in the SteppedTimeLine. This is also the element return at infinity. */
     @Override
     public T getFirstItem() {
         return timeSteps.getFirst().item;
@@ -160,7 +160,7 @@ public class SteppedTimeLine<T> implements TimeLine<T> {
         return timeSteps.getLast().time;
     }
 
-    /** Returns the item returned at the last step in the SteppedTimeLine. This is also the item return at infinity. */
+    /** Returns the item returned at the last stepBall in the SteppedTimeLine. This is also the item return at infinity. */
     @Override
     public T getLastItem() {
         return timeSteps.getLast().item;

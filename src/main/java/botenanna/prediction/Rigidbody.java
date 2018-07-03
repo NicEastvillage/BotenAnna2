@@ -24,6 +24,15 @@ public class Rigidbody implements Cloneable {
         return copy;
     }
 
+    /** Set this Rigidbody to be identical to another Rigidbody. */
+    public void set(Rigidbody other) {
+        position = other.position;
+        velocity = other.velocity;
+        acceleration = other.acceleration;
+        rotation = other.rotation;
+        angularVelocity = other.angularVelocity;
+    }
+
     public Vector3 getPosition() {
         return position;
     }

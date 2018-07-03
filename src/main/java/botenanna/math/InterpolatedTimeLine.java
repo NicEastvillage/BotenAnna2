@@ -20,7 +20,7 @@ public class InterpolatedTimeLine<T> implements TimeLine<T> {
         this.steps = new SteppedTimeLine<>();
     }
 
-    /** Add a time step which consists of an item and an associated point in time.
+    /** Add a time stepBall which consists of an item and an associated point in time.
      * @param time point in time in seconds.
      * @param item the item which will be returned at this point in time. */
     @Override
@@ -40,7 +40,7 @@ public class InterpolatedTimeLine<T> implements TimeLine<T> {
         SteppedTimeLine<T>.TimeStep first = steps.evaluateTrue(time);
         SteppedTimeLine<T>.TimeStep second = steps.evaluateUpTrue(time);
 
-        // Calculate the relative time between first and second step. Then lerp with that time
+        // Calculate the relative time between first and second stepBall. Then lerp with that time
         double relativeTime = RLMath.invLerp(first.time, second.time, time);
         return lerpFunction.lerp(first.item, second.item, relativeTime);
     }

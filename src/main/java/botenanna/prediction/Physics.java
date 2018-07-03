@@ -1,17 +1,102 @@
 package botenanna.prediction;
 
 import botenanna.game.Arena;
+import botenanna.game.Ball;
 import botenanna.math.Vector3;
 
-public class SimplePhysics {
+public class Physics {
 
     public static final Vector3 GRAVITY = Vector3.DOWN.scale(650);
+
+    /** Move a Ball. This includes bounces of walls and on the floor. This WILL change the balls data.
+     * @param time must be zero or positive. */
+    public static Rigidbody stepBall(Rigidbody ball, double time) {
+        if (time < 0) throw new IllegalArgumentException("Time must be zero or positive.");
+        if (time == 0) return ball;
+
+        double timeSpent = 0;
+        double timeLeft = time;
+        double nextWallHit;
+        double nextGroundHit;
+
+        do {
+
+            nextWallHit = predictArrivalAtAnyWall(ball, Ball.RADIUS);
+            nextGroundHit = predictArrivalAtHeight(ball, Ball.RADIUS, true);
+
+            // Check if ball doesn't hits anything
+            if (timeLeft < nextGroundHit && timeLeft < nextWallHit) {
+                stepBody(ball, timeLeft, true);
+                return ball;
+            } else if (nextWallHit < nextGroundHit) {
+                // Simulate until ball it hits wall
+                stepBody(ball, nextWallHit, true);
+                timeSpent += nextWallHit;
+                Vector3 vel = ball.getVelocity();
+                if (willHitSideWallNext(ball, Ball.RADIUS)) {
+                    ball.setVelocity(new Vector3(vel.x * Ball.BALL_WALL_BOUNCINESS, vel.y, vel.z));
+                } else {
+                    ball.setVelocity(new Vector3(vel.x, vel.y * Ball.BALL_WALL_BOUNCINESS, vel.z));
+                }
+            } else if (nextGroundHit == 0) {
+                // Simulate ball rolling until it hits wall
+                ball.setVelocity(ball.getVelocity().withZ(0));
+
+                if (Double.isNaN(nextWallHit)) {
+                    // The ball is laying still
+                    break;
+                }
+
+                stepBody(ball, Math.min(nextWallHit, timeLeft), false);
+                timeSpent += nextWallHit;
+
+                Vector3 vel = ball.getVelocity();
+                if (willHitSideWallNext(ball, Ball.RADIUS)) {
+                    ball.setVelocity(new Vector3(vel.x * Ball.BALL_WALL_BOUNCINESS, vel.y, vel.z));
+                } else {
+                    ball.setVelocity(new Vector3(vel.x, vel.y * Ball.BALL_WALL_BOUNCINESS, vel.z));
+                }
+            } else {
+                // Simulate until ball it hits ground
+                stepBody(ball, nextGroundHit, true);
+                timeSpent += nextGroundHit;
+                Vector3 vel = ball.getVelocity();
+                ball.setVelocity(new Vector3(vel.x, vel.y, vel.z * Ball.BALL_GROUND_BOUNCINESS));
+            }
+
+            timeLeft = time - timeSpent;
+        } while (timeSpent <= time);
+
+        return ball;
+    }
+
+    /** Get the path describing how a Ball will travel.
+     * @param ball the ball to be simulated
+     * @param duration must be zero or positive.
+     * @param stepsize must be positive. A smaller step size will increase the accuracy of the Path. */
+    public static Path getBallPath(Rigidbody ball, double duration, double stepsize) {
+        if (duration < 0) throw new IllegalArgumentException("Duration must be zero or positive.");
+        if (stepsize <= 0) throw new IllegalArgumentException("Step size must be positive.");
+
+        Path path = new Path();
+        Rigidbody clone = ball.clone();
+
+        for (double time = 0; time <= duration; time += stepsize) {
+            // Resetting the ball each iteration results in more calculations when the ball bounces a lot, but
+            // it will be more precise in general, since there will be less rounding errors.
+            clone.set(ball);
+            Vector3 pos = stepBall(clone, time).getPosition();
+            path.addTimeStep(time, pos);
+        }
+
+        return path;
+    }
 
     /** Move a Rigidbody {@code time} seconds into the future.
      * @param body the Rigidbody to be simulated
      * @param time time passed in seconds
      * @return the {@code body} simulated {@code time} seconds. */
-    public static <T extends Rigidbody> T step(T body, double time, boolean affectedByGravity) {
+    public static <T extends Rigidbody> T stepBody(T body, double time, boolean affectedByGravity) {
         Vector3 actualAcceleration = affectedByGravity ? body.getAcceleration().plus(GRAVITY) : body.getAcceleration();
 
         // new_position = p + (1/2 * a * t^2) + (v * t)
@@ -27,14 +112,16 @@ public class SimplePhysics {
      * @param body the body to be simulated
      * @param duration must be zero or positive.
      * @param stepsize must be positive. A smaller step size will increase the accuracy of the Path. */
-    public static Path getPath(Rigidbody body, double duration, double stepsize, boolean affectedByGravity) {
+    public static Path getBodyPath(Rigidbody body, double duration, double stepsize, boolean affectedByGravity) {
         if (duration < 0) throw new IllegalArgumentException("Duration must be zero or positive.");
         if (stepsize <= 0) throw new IllegalArgumentException("Step size must be positive.");
 
         Path path = new Path();
+        Rigidbody clone = body.clone();
 
         for (double time = 0; time <= duration; time += stepsize) {
-            Vector3 pos = step(body.clone(), time, affectedByGravity).getPosition();
+            clone.set(body);
+            Vector3 pos = stepBody(clone, time, affectedByGravity).getPosition();
             path.addTimeStep(time, pos);
         }
 

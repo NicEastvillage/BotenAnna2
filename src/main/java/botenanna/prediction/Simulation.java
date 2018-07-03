@@ -55,12 +55,12 @@ public class Simulation {
 
     /** @return a new ball which has been moved forwards. */
     public static Rigidbody simulateBall(Rigidbody ball, double step)    {
-        return BallPhysics.step(ball, step);
+        return Physics.stepBall(ball, step);
     }
 
     /** @return a new car which has been moved forwards. */
     private static Car steppedCar(Car car, double step) {
-        Car newCar = SimplePhysics.step(car, step, car.isMidAir());
+        Car newCar = Physics.stepBody(car, step, car.isMidAir());
         Vector3 pos = newCar.getPosition();
         if (pos.z < Car.GROUND_OFFSET) {
             //Hit ground

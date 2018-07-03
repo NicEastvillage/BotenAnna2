@@ -5,7 +5,7 @@ import botenanna.math.Vector2;
 import botenanna.math.Vector3;
 import botenanna.math.Zone;
 import botenanna.prediction.Rigidbody;
-import botenanna.prediction.SimplePhysics;
+import botenanna.prediction.Physics;
 import rlbot.cppinterop.RLBotDll;
 import rlbot.flat.BoostPadState;
 import rlbot.flat.FieldInfo;
@@ -56,13 +56,13 @@ public class Situation {
 
         // Ball
         this.ball = Ball.get(packet.ball());
-        double landingTime = SimplePhysics.predictArrivalAtHeight(ball, Ball.RADIUS, true);
+        double landingTime = Physics.predictArrivalAtHeight(ball, Ball.RADIUS, true);
         if (Double.isNaN(landingTime)) {
             this.ballLandingTime = 0;
             this.ballLandingPosition = ball.getPosition();
         } else {
             this.ballLandingTime = landingTime;
-            this.ballLandingPosition = SimplePhysics.step(ball.clone(), ballLandingTime, true).getPosition();
+            this.ballLandingPosition = Physics.stepBody(ball.clone(), ballLandingTime, true).getPosition();
         }
 
         // Game
@@ -85,13 +85,13 @@ public class Situation {
         this.boostPads = boostPads;
 
         // Ball landing
-        double landingTime = SimplePhysics.predictArrivalAtHeight(ball, Ball.RADIUS, true);
+        double landingTime = Physics.predictArrivalAtHeight(ball, Ball.RADIUS, true);
         if (Double.isNaN(landingTime)) {
             this.ballLandingTime = 0;
             this.ballLandingPosition = ball.getPosition();
         } else {
             this.ballLandingTime = landingTime;
-            this.ballLandingPosition = SimplePhysics.step(ball.clone(), ballLandingTime, true).getPosition();
+            this.ballLandingPosition = Physics.stepBody(ball.clone(), ballLandingTime, true).getPosition();
         }
 
         // TODO Currently no way to determine if we have entered a new phase
