@@ -27,4 +27,32 @@ public class Zone {
         }
         return false;
     }
+
+    public Vector3 getCenter() {
+        return new Vector3((lowX - highX)/2, (lowY - highY)/2, (lowZ - highZ)/2);
+    }
+
+    public double getLowX() {
+        return lowX;
+    }
+
+    public double getLowY() {
+        return lowY;
+    }
+
+    public double getLowZ() {
+        return lowZ;
+    }
+
+    public double getHighX() {
+        return highX;
+    }
+
+    public double getHighY() {
+        return highY;
+    }
+
+    public double getHighZ() {
+        return highZ;
+    }
 }
