@@ -124,11 +124,20 @@ public class Simulation {
 
     }
 
-    /** @returns the turn rate of the car. */
+    /** @return the turn rate of the car. */
     public static double getTurnRate(Car car) {
 
         double vel = car.getVelocity().getMagnitude();
         // See documentation "turnrate linear function.png" for math.
         return 1.325680896 + 0.0002869694124 * vel;
+    }
+
+    /** @return the torque added to the angularYawVelocity.
+     * Constructed from https://samuelpmish.github.io/notes/RocketLeague/ground_control/ */
+    public static double getGroundTurningTorque(double steer, double velocity, double angularYawVelocity) {
+        double vel100 = velocity / 100d;
+        double curve = 0.01311 * vel100 * vel100 + 0.56246 * vel100 + 7;
+        curve /= 1000d;
+        return steer * curve * velocity - angularYawVelocity;
     }
 }
