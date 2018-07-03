@@ -1,13 +1,12 @@
 package botenanna;
 
 import botenanna.behaviortree.BehaviorTree;
-import botenanna.behaviortree.builder.BehaviourTreeBuilder;
 import botenanna.game.ActionSet;
 import botenanna.game.Situation;
 import rlbot.Bot;
 import rlbot.ControllerState;
 import rlbot.flat.GameTickPacket;
-import rlbot.output.ControlsOutput;
+import rlbot.ControlsOutput;
 
 import java.io.IOException;
 
@@ -27,7 +26,7 @@ public class BotenAnnaBot implements Bot {
         this.playerIndex = playerIndex;
         team = (teamIndex == 0 ? Team.BLUE : Team.ORANGE);
         try {
-            behaviorTree = BotenAnna.defaultBTBuilder.buildUsingDefault();
+            behaviorTree = BotenAnnaWindow.defaultBTBuilder.buildUsingDefault();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -10,7 +10,7 @@ import botenanna.game.Situation;
 import botenanna.math.RLMath;
 import botenanna.math.Vector2;
 import botenanna.math.Vector3;
-import botenanna.physics.Rigidbody;
+import botenanna.prediction.Rigidbody;
 
 public class TaskShootAtGoal extends Leaf {
 

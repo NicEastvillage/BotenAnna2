@@ -1,7 +1,7 @@
 package botenanna.game;
 
 import botenanna.math.Vector3;
-import botenanna.physics.Rigidbody;
+import botenanna.prediction.Rigidbody;
 import rlbot.flat.BallInfo;
 
 /** Ball constants */

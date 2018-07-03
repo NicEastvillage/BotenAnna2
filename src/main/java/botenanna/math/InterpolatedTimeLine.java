@@ -1,7 +1,4 @@
-package botenanna.physics;
-
-import botenanna.math.LerpFunction;
-import botenanna.math.RLMath;
+package botenanna.math;
 
 import java.util.LinkedList;
 import java.util.List;

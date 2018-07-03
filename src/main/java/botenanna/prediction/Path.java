@@ -1,5 +1,6 @@
-package botenanna.physics;
+package botenanna.prediction;
 
+import botenanna.math.InterpolatedTimeLine;
 import botenanna.math.Vector3;
 
 /** A Path is essentially a sequence of points mapped to a time. The Path class allows you to iterate over this

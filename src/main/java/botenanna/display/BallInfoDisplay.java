@@ -1,7 +1,7 @@
 package botenanna.display;
 
 import botenanna.game.Situation;
-import botenanna.physics.Rigidbody;
+import botenanna.prediction.Rigidbody;
 import javafx.scene.paint.Color;
 
 /** A display for the ball info. */

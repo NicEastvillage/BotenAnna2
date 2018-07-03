@@ -2,7 +2,7 @@ package botenanna.game;
 
 import botenanna.math.RLMath;
 import botenanna.math.Vector3;
-import botenanna.physics.Rigidbody;
+import botenanna.prediction.Rigidbody;
 import rlbot.flat.GameTickPacket;
 import rlbot.flat.PlayerInfo;
 
@@ -62,7 +62,7 @@ public class Car extends Rigidbody {
         isMidAir = false; // TODO packet.getPlayers(index).getIsMidair() equivalent does not exist
         setBallDependentVariables(Vector3.convert(packet.ball().physics().location()));
 
-        isNearWall = !Arena.getFieldWithWallOffset(28).isPointInBoxArea(getPosition());
+        isNearWall = !Arena.getFieldWithWallOffset(28).contains(getPosition());
     }
 
     /** Constructor for new car based on an old instance of car */
@@ -85,7 +85,7 @@ public class Car extends Rigidbody {
         distanceToBall = oldCar.distanceToBall;
         angleToBall = oldCar.angleToBall;
 
-        isNearWall = !Arena.getFieldWithWallOffset(28).isPointInBoxArea(getPosition());
+        isNearWall = !Arena.getFieldWithWallOffset(28).contains(getPosition());
     }
 
     @Override

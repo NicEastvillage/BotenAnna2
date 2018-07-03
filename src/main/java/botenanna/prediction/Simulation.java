@@ -1,13 +1,10 @@
-package botenanna.game.simulation;
+package botenanna.prediction;
 
 import botenanna.game.ActionSet;
 import botenanna.game.BoostPad;
 import botenanna.game.Car;
 import botenanna.game.Situation;
 import botenanna.math.Vector3;
-import botenanna.physics.BallPhysics;
-import botenanna.physics.Rigidbody;
-import botenanna.physics.SimplePhysics;
 
 import static botenanna.game.Car.*;
 

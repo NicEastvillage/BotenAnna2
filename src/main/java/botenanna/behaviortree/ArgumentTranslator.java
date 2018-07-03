@@ -33,11 +33,11 @@ public class ArgumentTranslator {
             case "my_goal_pos": return (Situation a) -> Arena.getGoalPos(a.myPlayerIndex);   // Vector3
             case "enemy_goal_pos": return (Situation a) -> Arena.getGoalPos(a.enemyPlayerIndex);      // Vector3
 
-            case "mid_zone": return (Situation a) ->  Arena.MIDFIELD_ACROSS;                          // Box
-            case "my_goal_zone": return (Situation a) -> Arena.getGoalBoxArea(a.myPlayerIndex);       // Box
-            case "enemy_goal_zone": return (Situation a) -> Arena.getGoalBoxArea(a.myPlayerIndex);    // Box
-            case "my_goal_inside": return (Situation a) -> Arena.getGoalInside(a.myPlayerIndex);      // Box
-            case "enemy_goal_inside": return (Situation a) -> Arena.getGoalInside(a.myPlayerIndex);   // Box
+            case "mid_zone": return (Situation a) ->  Arena.MIDFIELD_ACROSS;                          // Zone
+            case "my_goal_zone": return (Situation a) -> Arena.getGoalBoxArea(a.myPlayerIndex);       // Zone
+            case "enemy_goal_zone": return (Situation a) -> Arena.getGoalBoxArea(a.myPlayerIndex);    // Zone
+            case "my_goal_inside": return (Situation a) -> Arena.getGoalInside(a.myPlayerIndex);      // Zone
+            case "enemy_goal_inside": return (Situation a) -> Arena.getGoalInside(a.myPlayerIndex);   // Zone
 
             default: throw new UnknownBTKeyException(key);
         }

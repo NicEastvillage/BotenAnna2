@@ -1,6 +1,4 @@
-package rlbot.output;
-
-import rlbot.ControllerState;
+package rlbot;
 
 public class ControlsOutput implements ControllerState {
 

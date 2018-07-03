@@ -1,7 +1,7 @@
 package botenanna.display;
 
 import botenanna.BotenAnnaBot;
-import botenanna.BotenAnna;
+import botenanna.BotenAnnaWindow;
 import botenanna.behaviortree.BehaviorTree;
 import botenanna.game.Situation;
 import javafx.geometry.Insets;
@@ -58,7 +58,7 @@ public class BotInfoDisplay extends InfoDisplay {
     /** Change the behaviour tree of the bot connected to this display. */
     private void changeBehaviourTree() {
         try {
-            BehaviorTree tree = BotenAnna.defaultBTBuilder.buildFromFileChooser();
+            BehaviorTree tree = BotenAnnaWindow.defaultBTBuilder.buildFromFileChooser();
             if (tree != null) {
                 bot.setBehaviorTree(tree);
             }

@@ -1,6 +1,6 @@
 package rlbot;
 
-import botenanna.BotenAnna;
+import botenanna.BotenAnnaWindow;
 import javafx.application.Application;
 
 /**
@@ -9,6 +9,6 @@ import javafx.application.Application;
 public class JavaExample {
 
     public static void main(String[] args) {
-        Application.launch(BotenAnna.class);
+        Application.launch(BotenAnnaWindow.class);
     }
 }

@@ -3,9 +3,9 @@ package botenanna.game;
 import botenanna.math.RLMath;
 import botenanna.math.Vector2;
 import botenanna.math.Vector3;
-import botenanna.math.zone.Box;
-import botenanna.physics.Rigidbody;
-import botenanna.physics.SimplePhysics;
+import botenanna.math.Zone;
+import botenanna.prediction.Rigidbody;
+import botenanna.prediction.SimplePhysics;
 import rlbot.cppinterop.RLBotDll;
 import rlbot.flat.BoostPadState;
 import rlbot.flat.FieldInfo;
@@ -262,8 +262,8 @@ public class Situation {
     /** Returns true if the ball is near a wall */
     public boolean isBallNearWall() {
         Vector3 point = ball.getPosition();
-        Box field = Arena.getFieldWithWallOffset(Ball.RADIUS * 3);
-        return !field.isPointInBoxArea(point);
+        Zone field = Arena.getFieldWithWallOffset(Ball.RADIUS * 3);
+        return !field.contains(point);
     }
 
     /** Returns true if the car is near or on a wall

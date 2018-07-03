@@ -1,7 +1,7 @@
 package botenanna.game;
 
 import rlbot.ControllerState;
-import rlbot.output.ControlsOutput;
+import rlbot.ControlsOutput;
 
 /**
  * A data class describing the outputs of an agent. This class can be translated into a ControllerState.

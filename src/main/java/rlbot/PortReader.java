@@ -1,4 +1,4 @@
-package rlbot.util;
+package rlbot;
 
 import java.io.IOException;
 import java.nio.file.Files;

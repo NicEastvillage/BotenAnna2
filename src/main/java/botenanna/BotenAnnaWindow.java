@@ -11,12 +11,12 @@ import javafx.stage.Stage;
 import rlbot.manager.BotManager;
 import rlbot.pyinterop.PythonInterface;
 import rlbot.pyinterop.PythonServer;
-import rlbot.util.PortReader;
+import rlbot.PortReader;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class BotenAnna extends Application {
+public class BotenAnnaWindow extends Application {
 
     public static BehaviourTreeBuilder defaultBTBuilder;
 

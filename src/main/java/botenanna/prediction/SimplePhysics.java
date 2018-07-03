@@ -1,4 +1,4 @@
-package botenanna.physics;
+package botenanna.prediction;
 
 import botenanna.game.Arena;
 import botenanna.math.Vector3;
