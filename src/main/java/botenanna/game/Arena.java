@@ -34,8 +34,10 @@ public class Arena {
     public static final Vector2 BLUE_GOALPOST_RIGHT = new Vector2(GOAL_POST_X_OFFSET, -WALL_Y);
     public static final Vector2 RED_GOALPOST_LEFT = new Vector2(-GOAL_POST_X_OFFSET, WALL_Y);
     public static final Vector2 RED_GOALPOST_RIGHT = new Vector2(GOAL_POST_X_OFFSET, WALL_Y);
-    public static final Vector3 BLUE_GOAL_POS = Vector3.FORWARD.scale(-5000);
-    public static final Vector3 ORANGE_GOAL_POS = Vector3.FORWARD.scale(5000);
+    public static final Vector3 BLUE_GOAL_POS = Vector3.FORWARD.scale(-4850);
+    public static final Vector3 ORANGE_GOAL_POS = Vector3.FORWARD.scale(4850);
+    public static final Vector3 BLUE_GOAL_LINE_POS = Vector3.FORWARD.scale(-LENGTH/2);
+    public static final Vector3 ORANGE_GOAL_LINE_POS = Vector3.FORWARD.scale(LENGTH/2);
 
     /** @return either +1 or -1, depending on which end of the y-axis this player's goal is. */
     public static int getTeamGoalYDirection(int playerIndex) {
@@ -63,5 +65,10 @@ public class Arena {
     /** @return a point in front of the goal belonging to playerIndex */
     public static Vector3 getGoalPos(int playerIndex) {
         return playerIndex == 0 ? BLUE_GOAL_POS : ORANGE_GOAL_POS;
+    }
+
+    /** @return a point on the line of the goal belonging to playerIndex */
+    public static Vector3 getGoalLinePos(int playerIndex) {
+        return playerIndex == 0 ? BLUE_GOAL_LINE_POS : ORANGE_GOAL_LINE_POS;
     }
 }
