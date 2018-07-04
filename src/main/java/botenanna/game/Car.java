@@ -2,6 +2,8 @@ package botenanna.game;
 
 import botenanna.math.RLMath;
 import botenanna.math.Vector3;
+import botenanna.prediction.Estimates;
+import botenanna.prediction.Physics;
 import botenanna.prediction.Rigidbody;
 import rlbot.flat.GameTickPacket;
 import rlbot.flat.PlayerInfo;
@@ -41,6 +43,10 @@ public class Car extends Rigidbody {
 
     private double distanceToBall;
     private double angleToBall;
+    private double reachBallTimeFullSpeed;
+    private double reachBallTimeNormalSpeed;
+    private Vector3 reachBallPosFullSpeed;
+    private Vector3 reachBallPosNormalSpeed;
 
     /** Constructor for a car in rocket league with data from the game packet. */
     public Car(int index, GameTickPacket packet) {
@@ -60,7 +66,7 @@ public class Car extends Rigidbody {
         isDemolished = info.isDemolished();
         isSupersonic = info.isSupersonic();
         isMidAir = false; // TODO packet.getPlayers(index).getIsMidair() equivalent does not exist
-        setBallDependentVariables(Vector3.convert(packet.ball().physics().location()));
+        setBallDependentVariables(Ball.get(packet.ball()));
 
         isNearWall = !Arena.getFieldWithWallOffset(28).contains(getPosition());
     }
@@ -136,9 +142,18 @@ public class Car extends Rigidbody {
         super.setAngularVelocity(angularVelocity);
     }
 
-    public void setBallDependentVariables(Vector3 ballPosition) {
+    public void setBallDependentVariables(Rigidbody ball) {
+        Vector3 ballPosition = ball.getPosition();
         angleToBall = RLMath.carsAngleToPoint(getPosition().asVector2(),  getRotation().yaw, ballPosition.asVector2());
         distanceToBall = getPosition().getDistanceTo(ballPosition);
+
+        Rigidbody ballClone = ball.clone();
+        reachBallTimeFullSpeed = Estimates.timeTillCarCanHitBall(getPosition(), ball, 1);
+        reachBallPosFullSpeed = Physics.stepBall(ballClone, reachBallTimeFullSpeed).getPosition();
+
+        ballClone.set(ball);
+        reachBallTimeNormalSpeed = Estimates.timeTillCarCanHitBall(getPosition(), ball, 0.63);
+        reachBallPosNormalSpeed = Physics.stepBall(ballClone, reachBallTimeNormalSpeed).getPosition();
     }
 
     public void setBoost(int amount) {
