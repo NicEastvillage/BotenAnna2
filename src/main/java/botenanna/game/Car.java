@@ -88,8 +88,13 @@ public class Car extends Rigidbody {
         isDemolished = oldCar.isDemolished;
         isSupersonic = oldCar.isSupersonic;
         isMidAir = oldCar.isMidAir;
+
         distanceToBall = oldCar.distanceToBall;
         angleToBall = oldCar.angleToBall;
+        reachBallTimeFullSpeed = oldCar.reachBallTimeFullSpeed;
+        reachBallPosFullSpeed = oldCar.reachBallPosFullSpeed;
+        reachBallTimeNormalSpeed = oldCar.reachBallTimeNormalSpeed;
+        reachBallPosNormalSpeed = oldCar.reachBallPosNormalSpeed;
 
         isNearWall = !Arena.getFieldWithWallOffset(28).contains(getPosition());
     }
@@ -231,5 +236,25 @@ public class Car extends Rigidbody {
 
     public void setIsMidAir(boolean midAir) {
         isMidAir = midAir;
+    }
+
+    public boolean isHasDoubleJumped() {
+        return hasDoubleJumped;
+    }
+
+    public double getReachBallTimeFullSpeed() {
+        return reachBallTimeFullSpeed;
+    }
+
+    public double getReachBallTimeNormalSpeed() {
+        return reachBallTimeNormalSpeed;
+    }
+
+    public Vector3 getReachBallPosFullSpeed() {
+        return reachBallPosFullSpeed;
+    }
+
+    public Vector3 getReachBallPosNormalSpeed() {
+        return reachBallPosNormalSpeed;
     }
 }

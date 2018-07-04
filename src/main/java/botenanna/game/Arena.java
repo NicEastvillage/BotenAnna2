@@ -10,6 +10,7 @@ public class Arena {
     public static final double LENGTH = 10280;
     public static final double WIDTH = 8240;
     public static final double HEIGHT = 4060;
+    public static final double DIAGONAL = 14300;
 
     public static final double WALL_X = WIDTH/2;
     public static final double WALL_Y = LENGTH/2;

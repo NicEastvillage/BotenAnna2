@@ -22,8 +22,8 @@ public class Simulation {
         Car simulatedEnemyCar = steppedCar(situation.getEnemyCar(), stepsize);
         BoostPad[] simulatedBoostPads = simulateBoostPads(situation.getBoostPads(), simulatedEnemyCar, simulatedMyCar, stepsize);
 
-        simulatedMyCar.setBallDependentVariables(simulatedBall.getPosition());
-        simulatedEnemyCar.setBallDependentVariables(simulatedBall.getPosition());
+        simulatedMyCar.setBallDependentVariables(simulatedBall);
+        simulatedEnemyCar.setBallDependentVariables(simulatedBall);
 
         return new Situation(simulatedMyCar, simulatedEnemyCar, simulatedBall , simulatedBoostPads);
     }
@@ -105,7 +105,7 @@ public class Simulation {
         }
 
         car = steppedCar(car, delta);
-        car.setBallDependentVariables(ball.getPosition());
+        car.setBallDependentVariables(ball);
 
         return car;
     }

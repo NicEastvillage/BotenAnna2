@@ -18,7 +18,7 @@ public class Estimates {
         double carReach;
         double dist2;
 
-        while (stepSize > 1/32d) {
+        while (stepSize > 1/16d) {
             do {
                 time += stepSize;
                 ballClone.set(ball);
@@ -27,7 +27,7 @@ public class Estimates {
 
                 dist2 = carPosition.getDistanceToSqr(ballClone.getPosition().scale(1, 1, 4));
 
-            } while (dist2 < carReach * carReach);
+            } while (dist2 > carReach * carReach);
             // latest step was too far
             time -= stepSize;
 

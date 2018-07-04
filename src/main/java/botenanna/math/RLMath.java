@@ -1,5 +1,7 @@
 package botenanna.math;
 
+import botenanna.game.Arena;
+
 /** A helper class for all math related to Rocket League */
 public class RLMath {
 
@@ -55,6 +57,15 @@ public class RLMath {
      *  @return a vector pointing to the side relative to the car. */
     public static Vector3 carSideVector(Vector3 carRotation){
         return carUpVector(carRotation).cross(carFrontVector(carRotation));
+    }
+
+    /** Determine whether a car faces a point or not. If the car is far away from the point a greater angle to the
+     * point will be accepted. This method is useful to determine if a car can boost to the point. */
+    public static boolean doesCarFacePoint(Vector2 carPos, double carYaw, Vector2 point) {
+        double dist = carPos.getDistanceTo(point);
+        double allowedAngle = (Math.PI / 2) * (dist / Arena.DIAGONAL);
+        double angle = carsAngleToPoint(carPos, carYaw, point);
+        return angle <= allowedAngle;
     }
 
     /** Linearly interpolate from {@code a} to {@code b} with time {@code t}, such that {@code t = 0} will return

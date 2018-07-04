@@ -3,14 +3,14 @@ Selector
 		GuardIsKickoff
 		Inverter
 			Sequencer
-				GuardIsDistanceLessThan my_pos ball_pos 440
+				GuardIsDistanceLessThan my_pos ball_pos 500
 				TaskDashForward
 		TaskGoTowardsPoint ball_land_pos false true
 	Sequencer
 		GuardIsMidAir
 		TaskAdjustAirRotation ball_land_pos
 	Sequencer
-		GuardIsDistanceLessThan my_pos ball_pos 400
+		GuardIsDistanceLessThan my_pos ball_pos_est05 400
 		GuardIsDoubleLessThan ang_ball 0.05 true
 		Inverter
 			GuardIsMidAir
@@ -30,17 +30,14 @@ Selector
 				TaskGoTowardsPoint best_boost
 		Selector
 			GuardIsBallOnMyHalf
-			GuardIsDistanceLessThan my_pos ball_pos 1200
-			GuardIsDistanceLessThan my_pos ball_land_pos 1800
-			Sequencer
-				GuardIsDistanceLessThan my_pos ball_pos 1600
-				Inverter
-					GuardIsDistanceLessThan enemy_pos ball_land_pos 1500
+			GuardIsDistanceLessThan my_pos ball_pos 1500
+			GuardIsDistanceLessThan my_pos ball_land_pos 2300
+            Inverter
+                GuardIsDistanceLessThan enemy_pos ball_land_pos 1500
 		Inverter
 			Sequencer
-				GuardIsDoubleLessThan ang_ball 0.08 true
 				Inverter
 					GuardIsDistanceLessThan my_pos ball_land_pos 1800
-				TaskGoTowardsPoint ball_land_pos true true
-		TaskGoTowardsPoint ball_land_pos
+				TaskGoTowardsBall 1.0
+		TaskGoTowardsBall 0.63
 	TaskGoTowardsPoint my_goal_pos

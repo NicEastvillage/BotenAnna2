@@ -22,6 +22,8 @@ public class ArgumentTranslator {
             case "enemy_rot": return (Situation a) -> a.getEnemyCar().getRotation();         // Vector3
 
             case "ball_pos": return (Situation a) -> a.getBall().getPosition();              // Vector3
+            case "ball_pos_est1": return (Situation a) -> a.getMyCar().getReachBallPosFullSpeed();    // Vector3
+            case "ball_pos_est05": return (Situation a) -> a.getMyCar().getReachBallPosNormalSpeed(); // Vector3
             case "ball_vel": return (Situation a) -> a.getBall().getVelocity();              // Vector3
             case "ball_land_time": return (Situation a) -> a.getBallLandingTime();           // time (double)
             case "ball_land_pos": return (Situation a) -> a.getBallLandingPosition();        // Vector3
