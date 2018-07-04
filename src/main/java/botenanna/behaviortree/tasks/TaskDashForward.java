@@ -6,12 +6,16 @@ import botenanna.behaviortree.NodeStatus;
 import botenanna.behaviortree.Status;
 import botenanna.game.ActionSet;
 import botenanna.game.Situation;
-import botenanna.physics.SteppedTimeLine;
+import botenanna.math.SteppedTimeLine;
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class TaskDashForward extends Leaf {
 
     private SteppedTimeLine<NodeStatus> timeLine;
     private boolean currentlyActive;
+    private LocalDateTime timer;
 
     /** <p>The TaskDashForward makes the car dash forward.</p>
      *  <p>It's signature is non existing </p>*/
@@ -37,23 +41,23 @@ public class TaskDashForward extends Leaf {
     @Override
     public void reset() {
         this.currentlyActive = false;
-        timeLine.reset();
     }
 
     @Override
     public NodeStatus run(Situation input) throws MissingNodeException {
 
-        if(currentlyActive == false){
-            timeLine.reset();
+        if(!currentlyActive){
+            timer = LocalDateTime.now();
             currentlyActive = true;
             return new NodeStatus(Status.RUNNING, new ActionSet().withJump(false).withThrottle(1), this, true);
         }
 
-        if (timeLine.evaluate() == null){
+        double secondsElapsed = timer.until(LocalDateTime.now(), ChronoUnit.MILLIS) * 0.001;
+        if (timeLine.evaluate(secondsElapsed) == null){
             currentlyActive = false;
             return new NodeStatus(Status.RUNNING, new ActionSet().withJump(false).withThrottle(1), this, true);
         }
 
-        return timeLine.evaluate();
+        return timeLine.evaluate(secondsElapsed);
     }
 }

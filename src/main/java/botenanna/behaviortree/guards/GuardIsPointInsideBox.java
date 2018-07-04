@@ -6,7 +6,7 @@ import botenanna.behaviortree.MissingNodeException;
 import botenanna.behaviortree.NodeStatus;
 import botenanna.game.Situation;
 import botenanna.math.Vector3;
-import botenanna.math.zone.Box;
+import botenanna.math.Zone;
 
 import java.util.function.Function;
 
@@ -15,10 +15,10 @@ public class GuardIsPointInsideBox extends Leaf {
     private Function<Situation, Object> givenPointFunc;
     private Function<Situation, Object> areaFunc;
 
-    /** The guard GuardIsPointInsideBox takes a Vector3 point and a Box area and then checks if the given point
+    /** The guard GuardIsPointInsideBox takes a Vector3 point and a Zone area and then checks if the given point
      * is inside the given box area. Returns SUCCESS when it is and FAILURE when it is not.
      *
-     * Its signature is: {@code GuardIsPointInsideBox <givenPoint:Vector3> <boxArea:Box>} */
+     * Its signature is: {@code GuardIsPointInsideBox <givenPoint:Vector3> <boxArea:Zone>} */
     public GuardIsPointInsideBox(String[] arguments) throws IllegalArgumentException {
         super(arguments);
 
@@ -38,9 +38,9 @@ public class GuardIsPointInsideBox extends Leaf {
 
         // Determine point and area
         Vector3 givenPoint = (Vector3) givenPointFunc.apply(input);
-        Box boxArea = (Box) areaFunc.apply(input);
+        Zone zone = (Zone) areaFunc.apply(input);
 
-        if (boxArea.isPointInBoxArea(givenPoint)) {
+        if (zone.contains(givenPoint)) {
             return NodeStatus.DEFAULT_SUCCESS;
         } else {
             return NodeStatus.DEFAULT_FAILURE;

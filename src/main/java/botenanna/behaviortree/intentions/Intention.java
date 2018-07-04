@@ -6,10 +6,14 @@ import botenanna.behaviortree.NodeStatus;
 import botenanna.behaviortree.Status;
 import botenanna.game.ActionSet;
 import botenanna.game.Situation;
-import botenanna.game.simulation.AStar;
+import botenanna.prediction.AStar;
 import botenanna.intentions.IntentionFunction;
-import botenanna.physics.TimeLine;
-import botenanna.physics.TimeTracker;
+import botenanna.math.TimeLine;
+
+import javax.swing.event.MouseInputListener;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 
 /** Intentions are nodes with no children. They use a intention function, the A*-algorithm, and simulation of the game to
  * find a sequence of ActionSets that will fulfil the intention. They return FAILURE when the method
@@ -22,7 +26,7 @@ public abstract class Intention extends Leaf {
     private boolean isRunning = false;
     private IntentionFunction intentionFunction;
     private TimeLine<ActionSet> sequence;
-    private TimeTracker timeTracker = new TimeTracker();
+    private LocalDateTime timer;
 
     public Intention(String[] arguments) throws IllegalArgumentException {
         super(arguments);
@@ -46,7 +50,7 @@ public abstract class Intention extends Leaf {
         if (!isRunning) {
             intentionFunction = getIntentionFunction(input);
             sequence = AStar.findSequence(input, intentionFunction, STEPSIZE);
-            timeTracker.startTimer();
+            timer = LocalDateTime.now();
             isRunning = true;
         }
 
@@ -56,14 +60,16 @@ public abstract class Intention extends Leaf {
             return NodeStatus.DEFAULT_FAILURE;
         }
 
+        double secondsPassed = timer.until(LocalDateTime.now(), ChronoUnit.MILLIS) * 0.001;
+
         // Out of next steps?
-        if (sequence.getLastTime() < timeTracker.getElapsedSecondsTimer() + STEPSIZE) {
+        if (sequence.getLastTime() < secondsPassed + STEPSIZE) {
             // Start over
             reset();
             return run(input);
         }
 
-        ActionSet action = sequence.evaluate(timeTracker.getElapsedSecondsTimer());
+        ActionSet action = sequence.evaluate(secondsPassed);
         return new NodeStatus(Status.RUNNING, action, this);
     }
 

@@ -65,6 +65,11 @@ public class Vector2 {
         return new Vector2(this.x * scalar, this.y * scalar);
     }
 
+    /** @return a copy of this vector where each component is scaled by a scalar. */
+    public Vector2 scale(double sx, double sy) {
+        return new Vector2(x * sx, y * sy);
+    }
+
     /** @return the magnitude (length) of this vector squared. Sometimes you don't have to find the square root, then this is faster. */
     public double getMagnitudeSqr() {
         return (Math.pow(this.x, 2) + Math.pow(this.y, 2));

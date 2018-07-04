@@ -1,13 +1,10 @@
-package botenanna.game.simulation;
+package botenanna.prediction;
 
 import botenanna.game.ActionSet;
-import botenanna.game.Boostpad;
+import botenanna.game.BoostPad;
 import botenanna.game.Car;
 import botenanna.game.Situation;
 import botenanna.math.Vector3;
-import botenanna.physics.BallPhysics;
-import botenanna.physics.Rigidbody;
-import botenanna.physics.SimplePhysics;
 
 import static botenanna.game.Car.*;
 
@@ -23,33 +20,34 @@ public class Simulation {
         Rigidbody simulatedBall = simulateBall(situation.getBall(), stepsize);
         Car simulatedMyCar = simulateCarActions(situation.getMyCar(), action,  simulatedBall, stepsize);
         Car simulatedEnemyCar = steppedCar(situation.getEnemyCar(), stepsize);
-        Boostpad[] simulatedBoostpads = simulateBoostpads(situation.getBoostpads(), simulatedEnemyCar, simulatedMyCar, stepsize);
+        BoostPad[] simulatedBoostPads = simulateBoostPads(situation.getBoostPads(), simulatedEnemyCar, simulatedMyCar, stepsize);
 
-        simulatedMyCar.setBallDependentVariables(simulatedBall.getPosition());
-        simulatedEnemyCar.setBallDependentVariables(simulatedBall.getPosition());
+        simulatedMyCar.setBallDependentVariables(simulatedBall);
+        simulatedEnemyCar.setBallDependentVariables(simulatedBall);
 
-        return new Situation(simulatedMyCar, simulatedEnemyCar, simulatedBall , simulatedBoostpads);
+        return new Situation(simulatedMyCar, simulatedEnemyCar, simulatedBall , simulatedBoostPads);
     }
 
-    /** Simulates the boostpads, if any of the cars can pick up boost and they are stepped close to a pad deactivate them
-     * @return an array of boostpads after simulation. */
-    private static Boostpad[] simulateBoostpads(Boostpad[] boostpads, Car enemyCar, Car myCar, double stepsize) {
+    /** Simulates the boostPads, if any of the cars can pick up boost and they are stepped close to a pad deactivate them
+     * @return an array of boostPads after simulation. */
+    private static BoostPad[] simulateBoostPads(BoostPad[] boostPads, Car enemyCar, Car myCar, double stepsize) {
 
-        for (int i = 0; i < boostpads.length; i++) {
-            Boostpad pad = boostpads[i];
+        BoostPad[] simulatedPads = new BoostPad[boostPads.length];
 
-            simulatePickupBoostpad(pad, myCar);
-            simulatePickupBoostpad(pad, enemyCar);
-
+        for (int i = 0; i < boostPads.length; i++) {
+            BoostPad pad = new BoostPad(boostPads[i]);
+            simulatePickupOfBoostPad(pad, myCar);
+            simulatePickupOfBoostPad(pad, enemyCar);
             pad.reduceRespawnTimeLeft(stepsize);
+            simulatedPads[i] = pad;
         }
 
-        return boostpads;
+        return simulatedPads;
     }
 
     /** Checks if car is touching pad. If they do, give the car boost and refresh boostpads respawn timer. */
-    private static void simulatePickupBoostpad(Boostpad pad, Car car) {
-        if (pad.getPosition().getDistanceTo(car.getPosition()) < Boostpad.PAD_RADIUS) {
+    private static void simulatePickupOfBoostPad(BoostPad pad, Car car) {
+        if (pad.getPosition().getDistanceTo(car.getPosition()) < BoostPad.PAD_RADIUS) {
             pad.refreshRespawnTimer();
             car.addBoost(pad.getBoostAmount());
         }
@@ -57,12 +55,12 @@ public class Simulation {
 
     /** @return a new ball which has been moved forwards. */
     public static Rigidbody simulateBall(Rigidbody ball, double step)    {
-        return BallPhysics.step(ball, step);
+        return Physics.stepBall(ball, step);
     }
 
     /** @return a new car which has been moved forwards. */
     private static Car steppedCar(Car car, double step) {
-        Car newCar = SimplePhysics.step(car, step, car.isMidAir());
+        Car newCar = Physics.stepBody(car, step, car.isMidAir());
         Vector3 pos = newCar.getPosition();
         if (pos.z < Car.GROUND_OFFSET) {
             //Hit ground
@@ -107,7 +105,7 @@ public class Simulation {
         }
 
         car = steppedCar(car, delta);
-        car.setBallDependentVariables(ball.getPosition());
+        car.setBallDependentVariables(ball);
 
         return car;
     }
@@ -126,11 +124,20 @@ public class Simulation {
 
     }
 
-    /** @returns the turn rate of the car. */
+    /** @return the turn rate of the car. */
     public static double getTurnRate(Car car) {
 
         double vel = car.getVelocity().getMagnitude();
         // See documentation "turnrate linear function.png" for math.
         return 1.325680896 + 0.0002869694124 * vel;
+    }
+
+    /** @return the torque added to the angularYawVelocity.
+     * Constructed from https://samuelpmish.github.io/notes/RocketLeague/ground_control/ */
+    public static double getGroundTurningTorque(double steer, double velocity, double angularYawVelocity) {
+        double vel100 = velocity / 100d;
+        double curve = 0.01311 * vel100 * vel100 + 0.56246 * vel100 + 7;
+        curve /= 1000d;
+        return steer * curve * velocity - angularYawVelocity;
     }
 }

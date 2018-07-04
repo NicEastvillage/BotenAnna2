@@ -1,4 +1,4 @@
-package botenanna.physics;
+package botenanna.prediction;
 
 import botenanna.math.Vector3;
 
@@ -22,6 +22,15 @@ public class Rigidbody implements Cloneable {
         copy.setRotation(rotation);
         copy.setAngularVelocity(angularVelocity);
         return copy;
+    }
+
+    /** Set this Rigidbody to be identical to another Rigidbody. */
+    public void set(Rigidbody other) {
+        position = other.position;
+        velocity = other.velocity;
+        acceleration = other.acceleration;
+        rotation = other.rotation;
+        angularVelocity = other.angularVelocity;
     }
 
     public Vector3 getPosition() {

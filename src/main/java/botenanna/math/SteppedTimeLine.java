@@ -1,11 +1,11 @@
-package botenanna.physics;
+package botenanna.math;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 /** <p>The SteppedTimeLine is able to associate items of type T with a specific point in time. The SteppedTimeLine is then able to return an
- * item based on time passed. The return item will be the item associated with the last passed time step.</p>
+ * item based on time passed. The return item will be the item associated with the last passed time stepBall.</p>
  *
  * <p>The SteppedTimeLine can be reset to start over.</p>*/
 public class SteppedTimeLine<T> implements TimeLine<T> {
@@ -21,15 +21,9 @@ public class SteppedTimeLine<T> implements TimeLine<T> {
         }
     }
 
-    private TimeTracker timeTracker = new TimeTracker();
     private LinkedList<TimeStep> timeSteps = new LinkedList<>();
 
-    /** Reset the timeline. */
-    public void reset() {
-        timeTracker.startTimer();
-    }
-
-    /** Add a time step which consists of an item and an associated point in time.
+    /** Add a time stepBall which consists of an item and an associated point in time.
      * @param time point in time in seconds.
      * @param item the item which will be returned at this point in time. */
     @Override
@@ -43,7 +37,7 @@ public class SteppedTimeLine<T> implements TimeLine<T> {
             return;
         }
 
-        // Find position to insert time step.
+        // Find position to insert time stepBall.
         // We assume it is placed at the end, because you usually add TimeSteps in order
         for (int i = timeSteps.size() - 1; i >= 0; i--) {
             TimeStep other = timeSteps.get(i);
@@ -55,21 +49,6 @@ public class SteppedTimeLine<T> implements TimeLine<T> {
                 return;
             }
         }
-    }
-
-    /** <p>Evaluate the item associated with the elapsed time since the SteppedTimeLine was reset using the internal TimeTracker.
-     * This method will round down to nearest defined item. </p>
-     * <p>Before and after the defined item's times, the first and last item will be returned. </p>
-     * @return the item associated with the current time. */
-    public T evaluate() {
-        return evaluate(timeTracker.getElapsedSecondsTimer());
-    }
-
-    /** <p>Evaluate the item associated with the elapsed time since the SteppedTimeLine was reset using the internal TimeTracker.
-     * This method will round up to nearest defined item. </p>
-     * @return the item associated with the current time. */
-    public T evaluateUp() {
-        return evaluateUp(timeTracker.getElapsedSecondsTimer());
     }
 
     /** <p>Evaluate the TimeStep associated with a given time. This method will round
@@ -99,7 +78,7 @@ public class SteppedTimeLine<T> implements TimeLine<T> {
         return active;
     }
 
-    /** <p>Evaluate the item associated with given time without using the internal TimeTracker. This method will round
+    /** <p>Evaluate the item associated with given time. This method will round
      * down to nearest defined item. </p>
      * <p>Before and after the defined item's times, the first and last item will be returned. </p>
      * <p>To get the element after a specific time, see {@code evaluateUp()}.</p>
@@ -133,7 +112,7 @@ public class SteppedTimeLine<T> implements TimeLine<T> {
         return timeSteps.getLast();
     }
 
-    /** <p>Evaluate the item associated with given time without using the internal TimeTracker. This method will round
+    /** <p>Evaluate the item associated with given time. This method will round
      * up to nearest defined item. When given a time that matches a defined item, it will return the following item,
      * if possible. </p>
      * <p>To get the element before a specific time, see {@code evaluate()}.</p>
@@ -143,7 +122,7 @@ public class SteppedTimeLine<T> implements TimeLine<T> {
         return evaluateUpTrue(time).item;
     }
 
-    /** Retrieve a List of all step times in chronological order. */
+    /** Retrieve a List of all stepBall times in chronological order. */
     @Override
     public List<Double> getTimes() {
         ArrayList<Double> list = new ArrayList<>(timeSteps.size());
@@ -169,7 +148,7 @@ public class SteppedTimeLine<T> implements TimeLine<T> {
         return timeSteps.getFirst().time;
     }
 
-    /** Returns the item returned at the first step in the SteppedTimeLine. This is also the element return at infinity. */
+    /** Returns the item returned at the first stepBall in the SteppedTimeLine. This is also the element return at infinity. */
     @Override
     public T getFirstItem() {
         return timeSteps.getFirst().item;
@@ -181,7 +160,7 @@ public class SteppedTimeLine<T> implements TimeLine<T> {
         return timeSteps.getLast().time;
     }
 
-    /** Returns the item returned at the last step in the SteppedTimeLine. This is also the item return at infinity. */
+    /** Returns the item returned at the last stepBall in the SteppedTimeLine. This is also the item return at infinity. */
     @Override
     public T getLastItem() {
         return timeSteps.getLast().item;

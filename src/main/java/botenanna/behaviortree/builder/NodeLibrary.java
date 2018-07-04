@@ -15,6 +15,7 @@ public class NodeLibrary {
             switch (nodeName) {
                 case "TaskGoForwards": return new TaskGoForwards(arguments);
                 case "TaskGoTowardsPoint": return new TaskGoTowardsPoint(arguments);
+                case "TaskGoTowardsBall": return new TaskGoTowardsBall(arguments);
                 case "TaskDashForward": return new TaskDashForward(arguments);
                 case "TaskAdjustAirRotation": return new TaskAdjustAirRotation(arguments);
                 case "TaskShootAtGoal": return new TaskShootAtGoal(arguments);

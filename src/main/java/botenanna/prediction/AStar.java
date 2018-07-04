@@ -1,10 +1,10 @@
-package botenanna.game.simulation;
+package botenanna.prediction;
 
 import botenanna.game.ActionSet;
 import botenanna.game.Car;
 import botenanna.game.Situation;
 import botenanna.intentions.IntentionFunction;
-import botenanna.physics.SteppedTimeLine;
+import botenanna.math.SteppedTimeLine;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

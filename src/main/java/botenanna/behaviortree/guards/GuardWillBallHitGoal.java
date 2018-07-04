@@ -7,9 +7,8 @@ import botenanna.behaviortree.MissingNodeException;
 import botenanna.behaviortree.NodeStatus;
 import botenanna.game.Situation;
 import botenanna.math.Vector3;
-import botenanna.math.zone.Box;
-import botenanna.physics.BallPhysics;
-import botenanna.physics.SimplePhysics;
+import botenanna.math.Zone;
+import botenanna.prediction.Physics;
 
 import java.util.function.Function;
 
@@ -21,7 +20,7 @@ public class GuardWillBallHitGoal extends Leaf {
      * of where the ball is when it reaches the wall. The guard returns SUCCESS when the ball has a path that
      * ends in the given box area. (Goal box) and returns FAILURE if it will not.
      *
-     * Its signature is: {@code GuardWillBallHitGoal <boxArea:Box>}*/
+     * Its signature is: {@code GuardWillBallHitGoal <boxArea:Zone>}*/
     public GuardWillBallHitGoal(String[] arguments) throws IllegalArgumentException {
         super(arguments);
 
@@ -39,15 +38,15 @@ public class GuardWillBallHitGoal extends Leaf {
     public NodeStatus run(Situation situation) throws MissingNodeException {
 
         // Determine time it will take for ball to hit next Y-positive wall
-        double time = SimplePhysics.predictArrivalAtWallYPositive(situation.getBall(), Ball.RADIUS);
+        double time = Physics.predictArrivalAtWallYPositive(situation.getBall(), Ball.RADIUS);
 
         // Find position when hitting wall
-        Vector3 destination = BallPhysics.step(situation.getBall(), time).getPosition();
+        Vector3 destination = Physics.stepBall(situation.getBall(), time).getPosition();
 
         // Determine area
-        Box boxArea = (Box) areaFunc.apply(situation);
+        Zone zone = (Zone) areaFunc.apply(situation);
 
-        if (boxArea.isPointInBoxArea(destination)) {
+        if (zone.contains(destination)) {
             return NodeStatus.DEFAULT_SUCCESS;
         } else {
             return NodeStatus.DEFAULT_FAILURE;

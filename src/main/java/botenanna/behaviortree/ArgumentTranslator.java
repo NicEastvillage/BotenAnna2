@@ -22,6 +22,8 @@ public class ArgumentTranslator {
             case "enemy_rot": return (Situation a) -> a.getEnemyCar().getRotation();         // Vector3
 
             case "ball_pos": return (Situation a) -> a.getBall().getPosition();              // Vector3
+            case "ball_pos_est1": return (Situation a) -> a.getMyCar().getReachBallPosFullSpeed();    // Vector3
+            case "ball_pos_est05": return (Situation a) -> a.getMyCar().getReachBallPosNormalSpeed(); // Vector3
             case "ball_vel": return (Situation a) -> a.getBall().getVelocity();              // Vector3
             case "ball_land_time": return (Situation a) -> a.getBallLandingTime();           // time (double)
             case "ball_land_pos": return (Situation a) -> a.getBallLandingPosition();        // Vector3
@@ -33,11 +35,11 @@ public class ArgumentTranslator {
             case "my_goal_pos": return (Situation a) -> Arena.getGoalPos(a.myPlayerIndex);   // Vector3
             case "enemy_goal_pos": return (Situation a) -> Arena.getGoalPos(a.enemyPlayerIndex);      // Vector3
 
-            case "mid_zone": return (Situation a) ->  Arena.MIDFIELD_ACROSS;                          // Box
-            case "my_goal_zone": return (Situation a) -> Arena.getGoalBoxArea(a.myPlayerIndex);       // Box
-            case "enemy_goal_zone": return (Situation a) -> Arena.getGoalBoxArea(a.myPlayerIndex);    // Box
-            case "my_goal_inside": return (Situation a) -> Arena.getGoalInside(a.myPlayerIndex);      // Box
-            case "enemy_goal_inside": return (Situation a) -> Arena.getGoalInside(a.myPlayerIndex);   // Box
+            case "mid_zone": return (Situation a) ->  Arena.MIDFIELD_ACROSS;                          // Zone
+            case "my_goal_zone": return (Situation a) -> Arena.getGoalBoxArea(a.myPlayerIndex);       // Zone
+            case "enemy_goal_zone": return (Situation a) -> Arena.getGoalBoxArea(a.myPlayerIndex);    // Zone
+            case "my_goal_inside": return (Situation a) -> Arena.getGoalInside(a.myPlayerIndex);      // Zone
+            case "enemy_goal_inside": return (Situation a) -> Arena.getGoalInside(a.myPlayerIndex);   // Zone
 
             default: throw new UnknownBTKeyException(key);
         }

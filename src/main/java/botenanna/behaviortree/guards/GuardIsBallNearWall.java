@@ -5,7 +5,7 @@ import botenanna.behaviortree.MissingNodeException;
 import botenanna.behaviortree.NodeStatus;
 import botenanna.game.Situation;
 import botenanna.math.Vector3;
-import botenanna.math.zone.Box;
+import botenanna.math.Zone;
 
 public class GuardIsBallNearWall extends Leaf {
 
@@ -28,9 +28,9 @@ public class GuardIsBallNearWall extends Leaf {
     @Override
     public NodeStatus run(Situation situation) throws MissingNodeException {
 
-        Box isPointInBox = new Box(new Vector3(-4080, -5080, 4060), new Vector3(4080, 5080, 0));
+        Zone fieldZone = new Zone(new Vector3(-4080, -5080, 4060), new Vector3(4080, 5080, 0));
 
-        if (isPointInBox.isPointInBoxArea(situation.getBall().getPosition())) {
+        if (fieldZone.contains(situation.getBall().getPosition())) {
             return NodeStatus.DEFAULT_SUCCESS;
         }
         return NodeStatus.DEFAULT_FAILURE;

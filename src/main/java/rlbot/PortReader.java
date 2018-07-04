@@ -1,4 +1,4 @@
-package rlbot.util;
+package rlbot;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,7 +10,6 @@ import java.util.stream.Stream;
 public class PortReader {
     public static Integer readPortFromFile(String s) {
         Path path = Paths.get("port.cfg");
-        System.out.println("Port read from " + path.toAbsolutePath().toString());
 
         try (Stream<String> lines = Files.lines(path)) {
             Optional<String> firstLine = lines.findFirst();

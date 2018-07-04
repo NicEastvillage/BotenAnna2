@@ -1,10 +1,10 @@
-package botenanna.physics;
+package botenanna.math;
 
 import java.util.List;
 
 /** <p>A TimeLine is able to associate items of type T with a specific point in time. Like a Collection it can return
- * an item, but to do that, you have to specify a double representing a point in time. TimeLines work great in
- * conjunctions with {@link TimeTracker}. See {@link SteppedTimeLine} and {@link InterpolatedTimeLine}. */
+ * an item, but to do that, you have to specify a double representing a point in time. See {@link SteppedTimeLine}
+ * and {@link InterpolatedTimeLine}. */
 public interface TimeLine<T> {
 
     /** Adds an item to a time. */
