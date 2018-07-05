@@ -32,8 +32,8 @@ public class Arena {
 
     public static final Vector2 BLUE_GOALPOST_LEFT = new Vector2(-GOAL_POST_X_OFFSET, -WALL_Y);
     public static final Vector2 BLUE_GOALPOST_RIGHT = new Vector2(GOAL_POST_X_OFFSET, -WALL_Y);
-    public static final Vector2 RED_GOALPOST_LEFT = new Vector2(-GOAL_POST_X_OFFSET, WALL_Y);
-    public static final Vector2 RED_GOALPOST_RIGHT = new Vector2(GOAL_POST_X_OFFSET, WALL_Y);
+    public static final Vector2 ORANGE_GOALPOST_LEFT = new Vector2(-GOAL_POST_X_OFFSET, WALL_Y);
+    public static final Vector2 ORANGE_GOALPOST_RIGHT = new Vector2(GOAL_POST_X_OFFSET, WALL_Y);
     public static final Vector3 BLUE_GOAL_POS = Vector3.FORWARD.scale(-4850);
     public static final Vector3 ORANGE_GOAL_POS = Vector3.FORWARD.scale(4850);
     public static final Vector3 BLUE_GOAL_LINE_POS = Vector3.FORWARD.scale(-LENGTH/2);
@@ -70,5 +70,13 @@ public class Arena {
     /** @return a point on the line of the goal belonging to playerIndex */
     public static Vector3 getGoalLinePos(int playerIndex) {
         return playerIndex == 0 ? BLUE_GOAL_LINE_POS : ORANGE_GOAL_LINE_POS;
+    }
+
+    /** @return an array with the goal posts of the goal owned by playerIndex. The first element will be the left post,
+     * and second element will be the right post. */
+    public static Vector2[] getGoalPosts(int playerIndex) {
+        return playerIndex == 0 ?
+                new Vector2[] {BLUE_GOALPOST_LEFT, BLUE_GOALPOST_RIGHT} :
+                new Vector2[] {ORANGE_GOALPOST_LEFT, ORANGE_GOALPOST_RIGHT};
     }
 }
