@@ -10,6 +10,8 @@ import rlbot.cppinterop.RLBotDll;
 import rlbot.flat.BoostPadState;
 import rlbot.flat.FieldInfo;
 import rlbot.flat.GameTickPacket;
+import rlbot.flat.RenderGroup;
+import rlbot.manager.BotLoopRenderer;
 
 import java.io.IOException;
 
@@ -203,7 +205,7 @@ public class Situation {
      * but ins't positioned correctly. */
     private void decideAimPosition() {
         Vector3 ballPosFlat = ball.getPosition().withZ(0);
-        Vector3 goalToBall = ballPosFlat.minus(Arena.getGoalLinePos(myPlayerIndex));
+        Vector3 goalToBall = ballPosFlat.minus(Arena.getGoalLinePos(enemyPlayerIndex));
         double offset = ball.getPosition().z;
         aimPosition = ballPosFlat.plus(goalToBall.getNormalized().scale(offset));
     }

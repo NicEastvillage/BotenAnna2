@@ -63,7 +63,7 @@ public class RLMath {
      * point will be accepted. This method is useful to determine if a car can boost to the point. */
     public static boolean doesCarFacePoint(Vector2 carPos, double carYaw, Vector2 point) {
         double dist = carPos.getDistanceTo(point);
-        double allowedAngle = (Math.PI / 2) * (dist / Arena.DIAGONAL);
+        double allowedAngle = (Math.PI / 2.3) * (dist / Arena.DIAGONAL);
         double angle = carsAngleToPoint(carPos, carYaw, point);
         return angle <= allowedAngle;
     }

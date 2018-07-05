@@ -2,6 +2,7 @@ package botenanna.behaviortree.tasks;
 
 import botenanna.behaviortree.*;
 import botenanna.game.ActionSet;
+import botenanna.game.Arena;
 import botenanna.game.Car;
 import botenanna.game.Situation;
 import botenanna.math.RLMath;
@@ -9,11 +10,9 @@ import botenanna.math.Vector3;
 import botenanna.prediction.Estimates;
 import botenanna.prediction.Physics;
 
-import java.util.function.Function;
-
 public class TaskGoTowardsBall extends Leaf {
 
-    private static final double SLIDE_ANGLE = 1.7;
+    private static final double SLIDE_ANGLE = 1.5;
 
     private double speed;
     private boolean allowSlide = true;
@@ -53,6 +52,7 @@ public class TaskGoTowardsBall extends Leaf {
 
         double time = Estimates.timeTillCarCanHitBall(myPos, input.getBall(), speed);
         Vector3 point = Physics.stepBall(input.getBall().clone(), time).getPosition();
+        point = point.plus(point.minus(Arena.getGoalPos(input.enemyPlayerIndex)).getNormalized().scale(40)); // Bias
 
         double ang = RLMath.carsAngleToPoint(myPos.asVector2(), myRotation.yaw, point.asVector2());
 
