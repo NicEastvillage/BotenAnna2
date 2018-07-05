@@ -9,6 +9,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,6 +30,10 @@ public class BehaviourTreeBuilder {
     /** Set the defaultFile used to generate a behaviour tree with the buildUsingDefault method. This method will open a defaultFile chooser
      * window, where the user can specify which defaultFile to open. */
     public void setupDefaultFile() throws MissingBehaviourTreeException {
+        Path path = Paths.get("tree.txt");
+        defaultFile = path.toFile();
+        System.out.println("Tree.txt found: " +  defaultFile.exists());
+        /*
         File previouslyUsedTree = getPreviouslyUsedTreeFile();
         if (previouslyUsedTree != null) {
             Alert defaultConfirmation = new Alert(Alert.AlertType.CONFIRMATION);
@@ -52,7 +58,7 @@ public class BehaviourTreeBuilder {
 
         if (defaultFile != null) {
             saveDefaultFilePath();
-        }
+        }*/
     }
 
     /** Save the path of the default BT file in config file. */
