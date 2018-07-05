@@ -10,6 +10,8 @@ import rlbot.cppinterop.RLBotDll;
 import rlbot.flat.BoostPadState;
 import rlbot.flat.FieldInfo;
 import rlbot.flat.GameTickPacket;
+import rlbot.flat.RenderGroup;
+import rlbot.manager.BotLoopRenderer;
 
 import java.io.IOException;
 
@@ -28,6 +30,7 @@ public class Situation {
     private final Rigidbody ball;
     private final double ballLandingTime;
     private final Vector3 ballLandingPosition;
+    private Vector3 aimPosition;
 
     private final boolean isKickOffPause;
     private final boolean isMatchOver;
@@ -73,6 +76,7 @@ public class Situation {
         this.gamePlayerCount = packet.playersLength();
 
         decidePossession();
+        decideAimPosition();
     }
 
     /** Create Situation by providing the pieces. */
@@ -102,6 +106,7 @@ public class Situation {
         this.gamePlayerCount = 2;
 
         decidePossession();
+        decideAimPosition();
     }
 
     /** Construct an array of boost pads from the packet's list of BoostpadInfo. */
@@ -196,6 +201,15 @@ public class Situation {
         return ang > Math.PI/2;
     }
 
+    /** Finds the aim position, which is ideal to go towards if the car wants to shoot,
+     * but ins't positioned correctly. */
+    private void decideAimPosition() {
+        Vector3 ballPosFlat = ball.getPosition().withZ(0);
+        Vector3 goalToBall = ballPosFlat.minus(Arena.getGoalLinePos(enemyPlayerIndex));
+        double offset = ball.getPosition().z;
+        aimPosition = ballPosFlat.plus(goalToBall.getNormalized().scale(offset));
+    }
+
     /** @return the GameTickPacket this was created from. Can be null. */
     public GameTickPacket getPacket() {
         return packet;
@@ -282,6 +296,10 @@ public class Situation {
 
     public Vector3 getBallLandingPosition() {
         return new Vector3(ballLandingPosition);
+    }
+
+    public Vector3 getAimPosition() {
+        return aimPosition;
     }
 
     public boolean isKickOffPause() {

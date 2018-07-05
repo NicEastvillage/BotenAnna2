@@ -96,10 +96,10 @@ public class TaskBallTowardsGoal extends Leaf {
             //leftGoalPost = Situation.BLUE_GOALPOST_LEFT;
         }
         else {
-            //ballToRightGoalPostVector = Situation.RED_GOALPOST_RIGHT.minus(expectedBallLocation.asVector2());
-            //ballToLeftGoalPostVector = Situation.RED_GOALPOST_LEFT.minus(expectedBallLocation.asVector2());
-            //rightGoalPost = Situation.RED_GOALPOST_RIGHT;
-            //leftGoalPost = Situation.RED_GOALPOST_LEFT;
+            //ballToRightGoalPostVector = Situation.ORANGE_GOALPOST_RIGHT.minus(expectedBallLocation.asVector2());
+            //ballToLeftGoalPostVector = Situation.ORANGE_GOALPOST_LEFT.minus(expectedBallLocation.asVector2());
+            //rightGoalPost = Situation.ORANGE_GOALPOST_RIGHT;
+            //leftGoalPost = Situation.ORANGE_GOALPOST_LEFT;
             middleOfGoal = new Vector2(0,5200);
         }
 

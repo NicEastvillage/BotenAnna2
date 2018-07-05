@@ -47,6 +47,7 @@ public class NodeLibrary {
                 case "GuardIsPointInsideBox": return new GuardIsPointInsideBox(arguments);
                 case "GuardIsBallNearWall": return new GuardIsBallNearWall(arguments);
                 case "GuardBallMidAir": return new GuardBallMidAir(arguments);
+                case "GuardIsInAimingCone": return new GuardIsInAimingCone(arguments);
             }
         } else {
             // Other nodes

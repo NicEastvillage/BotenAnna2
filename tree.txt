@@ -28,6 +28,20 @@ Selector
 							GuardIsBallOnMyHalf
 						GuardIntercept
 				TaskGoTowardsPoint best_boost
+	    Inverter
+            Sequencer
+                Inverter
+                    GuardIsBallOnMyHalf
+                GuardIsInAimingCone
+                TaskGoTowardsBall 1
+	    Inverter
+	        Sequencer
+                GuardIsPointInsideBox ball_pos mid_zone
+                Inverter
+                    Sequencer
+                        GuardIsInAimingCone
+                        TaskGoTowardsBall 0.72
+                TaskGoTowardsPoint aim_pos
 		Selector
 			GuardIsBallOnMyHalf
 			GuardIsDistanceLessThan my_pos ball_pos 1500

@@ -63,7 +63,7 @@ public class RLMath {
      * point will be accepted. This method is useful to determine if a car can boost to the point. */
     public static boolean doesCarFacePoint(Vector2 carPos, double carYaw, Vector2 point) {
         double dist = carPos.getDistanceTo(point);
-        double allowedAngle = (Math.PI / 2) * (dist / Arena.DIAGONAL);
+        double allowedAngle = (Math.PI / 2.3) * (dist / Arena.DIAGONAL);
         double angle = carsAngleToPoint(carPos, carYaw, point);
         return angle <= allowedAngle;
     }
@@ -78,5 +78,17 @@ public class RLMath {
      * That means if {@code v = a} this will return {@code 0} and if {@code v = b} this will return {@code 1}. */
     public static double invLerp(double a, double b, double v) {
         return b - a != 0 ? v - a / (b - a) : a;
+    }
+
+    /** Determines whether a point is inside an unbound triangle. The triangle's top is the {@code A} vector.
+     * The sides of the triangle are two lines that goes from {@code A} and through {@code B} and {@code C},
+     * respectively. The triangle does not have a third side, hence unbound. */
+    // method from https://www.youtube.com/watch?v=HYAgJN3x4GA
+    public static boolean isPointInUnboundTriangle(Vector2 point, Vector2 A, Vector2 B, Vector2 C) {
+        double s = A.x * (C.y + A.y) + (point.y - A.y) * (C.x - A.x) - point.x * (C.y - A.y);
+        s = s / ((B.y - A.y) * (C.x - A.x) - (B.x - A.x) * (C.y - A.y));
+        double t = (point.y - A.y - s*(B.y - A.y)) / (C.y - A.y);
+
+        return s >= 0 && t >= 0;
     }
 }
