@@ -235,7 +235,7 @@ public class BehaviourTreeBuilder {
         // Use NodeLibrary to construct node
         Node node = NodeLibrary.nodeFromString(parts.get(0), args.toArray(new String[0]));
         if (node instanceof Leaf)
-            ((Leaf)node).setOriginalString(line);
+            ((Leaf)node).setOriginalString(line.trim().replace("Task", ""));
         return node;
     }
 

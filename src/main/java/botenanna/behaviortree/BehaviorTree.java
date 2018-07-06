@@ -71,7 +71,7 @@ public class BehaviorTree implements Node {
 
     /** Returns the current node as a string. The string will be identical to the string from the behaviour tree
      * source file that the node was created from. */
-    public String getCurrentNodeAsString(NodeStatus status) {
+    public String getCurrentNodeAsString() {
         if (lastNodeStatus == null) {
             return "Initializing...";
         } else if (lastNodeStatus.creator instanceof Leaf) {

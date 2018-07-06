@@ -70,6 +70,11 @@ public class BotenAnnaBot implements Bot {
         lastInputReceived = situation;
         try {
             ActionSet action = process(situation);
+            try {
+                BotenAnnaWindow.updateQueue.add(this);
+            } catch (IllegalStateException e) {
+                // Queue is probably full
+            }
             return action.toControllerState();
         } catch (Exception e) {
             e.printStackTrace();
