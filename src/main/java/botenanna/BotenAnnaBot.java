@@ -67,8 +67,14 @@ public class BotenAnnaBot implements Bot {
             return new ControlsOutput();
         }
         Situation situation = new Situation(request, playerIndex);
+        lastInputReceived = situation;
         try {
             ActionSet action = process(situation);
+            try {
+                BotenAnnaWindow.updateQueue.add(this);
+            } catch (IllegalStateException e) {
+                // Queue is probably full
+            }
             return action.toControllerState();
         } catch (Exception e) {
             e.printStackTrace();

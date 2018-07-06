@@ -8,6 +8,7 @@ public class BehaviorTree implements Node {
 
     private Node topNode;
     private NodeStatus lastNodeStatus;
+    private String currentNodeString = "";
 
     @Override
     public void reset() {
@@ -68,12 +69,15 @@ public class BehaviorTree implements Node {
         topNode = child;
     }
 
-    /** Gets the string of the lastNodeStatus creator
-     *  @return the string of the creator     */
-    public String getLastNodeName() {
-        if (lastNodeStatus==null){
-                return "None";}
-        return String.valueOf(lastNodeStatus.creator);
-
+    /** Returns the current node as a string. The string will be identical to the string from the behaviour tree
+     * source file that the node was created from. */
+    public String getCurrentNodeAsString() {
+        if (lastNodeStatus == null) {
+            return "Initializing...";
+        } else if (lastNodeStatus.creator instanceof Leaf) {
+            return ((Leaf)lastNodeStatus.creator).getOriginalString();
+        } else {
+            return "Thinking...";
+        }
     }
 }

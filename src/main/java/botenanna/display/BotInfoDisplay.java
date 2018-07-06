@@ -20,10 +20,10 @@ public class BotInfoDisplay extends InfoDisplay {
     private BotenAnnaBot bot;
 
     public BotInfoDisplay(BotenAnnaBot bot) {
-        super("Car #" + bot.getIndex(), bot.getIndex() == 0 ? BLUE : ORANGE);
+        super("Car #" + bot.getIndex(), bot.getTeam() == BotenAnnaBot.Team.BLUE ? BLUE : ORANGE);
         this.bot = bot;
 
-        addChangeBtButton();
+        //addChangeBtButton();
     }
 
     /** Add button to header that allows changing of behaviour tree. */
@@ -39,20 +39,16 @@ public class BotInfoDisplay extends InfoDisplay {
     /** Update info displayed. */
     public void update() {
         Situation input = bot.getLastInputReceived();
-        if (input == null || input.getMyCar().getPosition() == null)
+        if (input == null)
             return;
 
         infoLabel.setText(String.format(
                 "Pos: %s\n" +
-                "Vel: %s\n" +
-                "Rot: %s\n" +
-                "AngToBall: %f\n" +
-                "HasPossession: %b",
+                "Possession: %b\n" +
+                "Executing: %s",
                 input.getMyCar().getPosition().toStringFixedSize(),
-                input.getMyCar().getVelocity().toStringFixedSize(),
-                input.getMyCar().getRotation().toStringFixedSize(),
-                input.getMyCar().getAngleToBall(),
-                input.hasPossession(input.myPlayerIndex)));
+                input.hasPossession(input.myPlayerIndex),
+                bot.getBehaviorTree().getCurrentNodeAsString()));
     }
 
     /** Change the behaviour tree of the bot connected to this display. */

@@ -3,8 +3,12 @@ package botenanna;
 import botenanna.behaviortree.builder.BehaviourTreeBuilder;
 import botenanna.display.BallInfoDisplay;
 import botenanna.display.BotInfoDisplay;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -15,16 +19,17 @@ import rlbot.PortReader;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class BotenAnnaWindow extends Application {
 
     public static BehaviourTreeBuilder defaultBTBuilder;
+    public static ArrayBlockingQueue<BotenAnnaBot> updateQueue = new ArrayBlockingQueue<>(5);
 
     private Pane root;
     private Pane botInfoDisplayRoot;
     private PythonServer pythonServer;
     private Map<BotenAnnaBot, BotInfoDisplay> botInfoDisplays;
-    private BallInfoDisplay ballInfoDisplay;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -39,10 +44,8 @@ public class BotenAnnaWindow extends Application {
         botInfoDisplayRoot = new VBox();
         root.getChildren().add(botInfoDisplayRoot);
         botInfoDisplays = new HashMap<>();
-        ballInfoDisplay = new BallInfoDisplay();
-        root.getChildren().add(ballInfoDisplay);
 
-        Scene scene = new Scene(root, 180, 150);
+        Scene scene = new Scene(root, 350, 160);
         stage.setScene(scene);
         stage.setTitle("Boten Anna - Data Window");
         stage.setAlwaysOnTop(true);
@@ -54,6 +57,22 @@ public class BotenAnnaWindow extends Application {
         PythonInterface pythonInterface = new BotenAnnaPythonInterface(new BotManager());
         pythonServer = new PythonServer(pythonInterface, port);
         pythonServer.start();
+
+        // Setup timer that acts each frame and checks bot updates placed in updateQueue
+        final LongProperty lastUpdate = new SimpleLongProperty();
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (now - lastUpdate.get() > 0) {
+                    final BotenAnnaBot bot = updateQueue.poll();
+                    if (bot != null) {
+                        updateBotInfoDisplay(bot);
+                    }
+                    lastUpdate.set(now);
+                }
+            }
+        };
+        timer.start();
     }
 
     private void createDefaultBehaviourTreeBuilder(Stage stage) {
