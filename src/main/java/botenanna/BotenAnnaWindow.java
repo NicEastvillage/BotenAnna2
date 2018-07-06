@@ -39,8 +39,6 @@ public class BotenAnnaWindow extends Application {
         botInfoDisplayRoot = new VBox();
         root.getChildren().add(botInfoDisplayRoot);
         botInfoDisplays = new HashMap<>();
-        ballInfoDisplay = new BallInfoDisplay();
-        root.getChildren().add(ballInfoDisplay);
 
         Scene scene = new Scene(root, 180, 150);
         stage.setScene(scene);

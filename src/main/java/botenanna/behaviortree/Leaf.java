@@ -4,6 +4,7 @@ import botenanna.behaviortree.builder.BehaviourTreeChildException;
 
 public abstract class Leaf implements Node {
 
+    private String originalString = "";
     private String[] arguments;
 
     public Leaf(String[] arguments) throws IllegalArgumentException {
@@ -19,5 +20,13 @@ public abstract class Leaf implements Node {
     /** @return the arguments this Leaf received, when it was created. */
     public String[] getArguments() {
         return arguments;
+    }
+
+    public void setOriginalString(String originalString) {
+        this.originalString = originalString;
+    }
+
+    public String getOriginalString() {
+        return originalString;
     }
 }

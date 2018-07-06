@@ -67,6 +67,7 @@ public class BotenAnnaBot implements Bot {
             return new ControlsOutput();
         }
         Situation situation = new Situation(request, playerIndex);
+        lastInputReceived = situation;
         try {
             ActionSet action = process(situation);
             return action.toControllerState();

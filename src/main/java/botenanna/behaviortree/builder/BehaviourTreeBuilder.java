@@ -1,6 +1,7 @@
 package botenanna.behaviortree.builder;
 
 import botenanna.behaviortree.BehaviorTree;
+import botenanna.behaviortree.Leaf;
 import botenanna.behaviortree.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
@@ -232,7 +233,10 @@ public class BehaviourTreeBuilder {
         }
 
         // Use NodeLibrary to construct node
-        return NodeLibrary.nodeFromString(parts.get(0), args.toArray(new String[0]));
+        Node node = NodeLibrary.nodeFromString(parts.get(0), args.toArray(new String[0]));
+        if (node instanceof Leaf)
+            ((Leaf)node).setOriginalString(line);
+        return node;
     }
 
     /** Transform a BufferedReader of Strings to a Queue of Strings. Throws an IOException if reading fails.
