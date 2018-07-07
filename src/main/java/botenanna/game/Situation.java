@@ -152,7 +152,7 @@ public class Situation {
             Vector3 position = pad.getPosition();
 
             if (pad.isActive()){
-                double angleToBoost = RLMath.carsAngleToPoint(new Vector2(myCar.getPosition()), myCar.getPosition().yaw, position.asVector2());
+                double angleToBoost = RLMath.carsAngleToPoint(myCar.getPosition().asVector2(), myCar.getRotation().yaw, position.asVector2());
                 double distance = myCar.getPosition().getDistanceTo(position);
                 double distFunc = ((Arena.LENGTH - distance) / Arena.LENGTH);
                 double newBoostUtility = (Math.cos(angleToBoost) * distFunc);
@@ -164,7 +164,14 @@ public class Situation {
             }
         }
 
-        return bestBoostPad = bestPad;
+        bestBoostPad = bestPad;
+
+        // Safety
+        if (bestBoostPad == null) {
+            bestBoostPad = new BoostPad(Arena.getGoalPos(myPlayerIndex), false);
+        }
+
+        return bestBoostPad;
     }
 
     private void decidePossession() {

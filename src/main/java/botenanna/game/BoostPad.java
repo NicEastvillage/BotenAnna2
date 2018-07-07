@@ -30,6 +30,12 @@ public class BoostPad {
         isBigBoostPad = boostPad.isFullBoost();
     }
 
+    public BoostPad(Vector3 position, boolean isBig) {
+        this.position = position;
+        respawnTimeLeft = 0;
+        isBigBoostPad = isBig;
+    }
+
     @Override
     public String toString() {
         return "BoostPad(x: " + position.x + ", y: " + position.y +
