@@ -6,7 +6,6 @@ import botenanna.game.Situation;
 import rlbot.Bot;
 import rlbot.ControllerState;
 import rlbot.flat.GameTickPacket;
-import rlbot.ControlsOutput;
 
 import java.io.IOException;
 

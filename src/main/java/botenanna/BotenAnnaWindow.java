@@ -1,21 +1,18 @@
 package botenanna;
 
 import botenanna.behaviortree.builder.BehaviourTreeBuilder;
-import botenanna.display.BallInfoDisplay;
 import botenanna.display.BotInfoDisplay;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import rlbot.manager.BotManager;
 import rlbot.pyinterop.PythonInterface;
 import rlbot.pyinterop.PythonServer;
-import rlbot.PortReader;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,6 @@
-package rlbot;
+package botenanna;
+
+import rlbot.ControllerState;
 
 public class ControlsOutput implements ControllerState {
 
